@@ -44,9 +44,9 @@ func createDownloadsDirectory(folderName string) (string, error) {
 }
 
 func (jm *JobManager) moveToCompletedDirectory(job *Job) error {
-	targetPath := filepath.Join(jm.CompletedDirectoryPath, filepath.Base(job.Path))
+	targetDirectoryPath := filepath.Join(jm.CompletedDirectoryPath, filepath.Base(job.Path))
 
-	if err := os.MkdirAll(targetPath, 0644); err != nil {
+	if err := os.MkdirAll(targetDirectoryPath, 0644); err != nil {
 		return err
 	}
 
@@ -62,14 +62,14 @@ func (jm *JobManager) moveToCompletedDirectory(job *Job) error {
 		}
 
 		sourcePath := filepath.Join(job.Path, item.Name())
-		targetPath = filepath.Join(targetPath, item.Name())
+		targetPath := filepath.Join(targetDirectoryPath, item.Name())
 
 		if err := os.Rename(sourcePath, targetPath); err != nil {
 			return err
 		}
 	}
 
-	if err = os.Remove(job.Path); err != nil {
+	if err = os.RemoveAll(job.Path); err != nil {
 		return err
 	}
 
