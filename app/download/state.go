@@ -2,7 +2,6 @@ package download
 
 import (
 	"io/ioutil"
-	"os"
 	"path/filepath"
 )
 
@@ -11,17 +10,6 @@ func (jm *JobManager) createDriveIdFile(path string, driveId string) error {
 
 	if err := ioutil.WriteFile(path, []byte(driveId), 0644); err != nil {
 		jm.logger.Errorf("failed to write drive id file. %v", err)
-		return err
-	}
-
-	return nil
-}
-
-func (jm *JobManager) removeDriveIdFile(path string) error {
-	path = filepath.Join(path, driveIdFileName)
-
-	if err := os.Remove(path); err != nil {
-		jm.logger.Errorf("failed to remove drive id file. %v", err)
 		return err
 	}
 

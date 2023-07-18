@@ -121,10 +121,6 @@ func (jm *JobManager) FinishJob(job *Job) error {
 		return err
 	}
 
-	if err := jm.removeDriveIdFile(job.Path); err != nil {
-		return err
-	}
-
 	return nil
 }
 
