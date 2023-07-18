@@ -1,14 +1,14 @@
 package download
 
 import (
-	"io/ioutil"
+	"os"
 	"path/filepath"
 )
 
 func (jm *JobManager) createDriveIdFile(path string, driveId string) error {
 	path = filepath.Join(path, driveIdFileName)
 
-	if err := ioutil.WriteFile(path, []byte(driveId), 0644); err != nil {
+	if err := os.WriteFile(path, []byte(driveId), 0644); err != nil {
 		jm.logger.Errorf("failed to write drive id file. %v", err)
 		return err
 	}
@@ -19,7 +19,7 @@ func (jm *JobManager) createDriveIdFile(path string, driveId string) error {
 func (jm *JobManager) readDriveIdFile(path string) (string, error) {
 	path = filepath.Join(path, driveIdFileName)
 
-	buf, err := ioutil.ReadFile(path)
+	buf, err := os.ReadFile(path)
 
 	if err != nil {
 		jm.logger.Errorf("failed to read drive id file. %v", err)

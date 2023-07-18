@@ -1,7 +1,6 @@
 package download
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -50,7 +49,7 @@ func (jm *JobManager) moveToCompletedDirectory(job *Job) error {
 		return err
 	}
 
-	items, err := ioutil.ReadDir(job.Path)
+	items, err := os.ReadDir(job.Path)
 
 	if err != nil {
 		return err
@@ -77,7 +76,7 @@ func (jm *JobManager) moveToCompletedDirectory(job *Job) error {
 }
 
 func (jm *JobManager) getSubfolders(path string) ([]string, error) {
-	items, err := ioutil.ReadDir(path)
+	items, err := os.ReadDir(path)
 
 	if err != nil {
 		return nil, err
