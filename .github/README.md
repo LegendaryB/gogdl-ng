@@ -40,7 +40,7 @@ logLevel = "info"
 # Defines the location where to write the application log file.
 logFilePath = "./config/gogdl-ng.log"
 
-# Defines if the messages should be logged to console also or not
+# Defines if the messages should also be logged to console or not
 logToConsole = true
 
 [queue]
