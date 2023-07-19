@@ -33,8 +33,15 @@ title = "gogdl-ng"
 # Defines the port on which the application is listening for requests.
 listenPort = 3200
 
+[logging]
+# Defines the log level. Must be one of the following: trace, debug, info, warn, error, fatal, panic
+logLevel = "info"
+
 # Defines the location where to write the application log file.
 logFilePath = "./config/gogdl-ng.log"
+
+# Defines if the messages should be logged to console also or not
+logToConsole = true
 
 [queue]
 # Defines the maximum capacity of the job queue.
