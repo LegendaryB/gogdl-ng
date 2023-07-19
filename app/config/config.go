@@ -9,8 +9,13 @@ import (
 )
 
 type ApplicationConfiguration struct {
-	ListenPort  int
-	LogFilePath string
+	ListenPort int
+}
+
+type LoggingConfiguration struct {
+	LogLevel     string
+	LogFilePath  string
+	LogToConsole bool
 }
 
 type QueueConfiguration struct {
@@ -30,6 +35,7 @@ type Configuration struct {
 	path string
 
 	Application ApplicationConfiguration
+	Logging     LoggingConfiguration
 	Queue       QueueConfiguration
 	GDrive      GDriveConfiguration
 	Download    DownloadConfiguration

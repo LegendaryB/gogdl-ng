@@ -17,26 +17,32 @@ func Run() {
 	conf, err := config.NewConfigurationFromFile()
 
 	if err != nil {
-		log.Fatalf("Failed to retrieve app configuration. %v", err)
+		log.Panicf("Failed to retrieve app configuration. %v", err)
 	}
 
-	logger, err := logging.NewLogger(conf.Application.LogFilePath)
+	logger, err := logging.NewLogger(conf.Logging)
 
 	if err != nil {
-		log.Fatalf("Failed to initialize logger. %s", err)
+		log.Panicf("Failed to initialize logger. %v", err)
 	}
+
+	logger.Infof("Loaded configuration file: %s", conf.GetConfigurationFolderPath())
 
 	drive, err := gdrive.NewDriveService(conf, logger)
 
 	if err != nil {
-		logger.Fatalf("Failed to create Google Drive service. %v", err)
+		logger.Fatalf("Failed to create instance of the Google Drive service. %v", err)
 	}
+
+	logger.Info("Created instance of the Google Drive service")
 
 	jobManager, err := download.NewJobManager(logger, conf, drive)
 
 	if err != nil {
-		logger.Fatalf("Failed to create job manager. %v", err)
+		logger.Fatalf("Failed to create instance of the Job manager. %v", err)
 	}
+
+	logger.Info("Created instance of the Job manager")
 
 	router := mux.NewRouter().StrictSlash(true)
 	router = router.PathPrefix("/api/v1").Subrouter()
