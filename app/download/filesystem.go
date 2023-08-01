@@ -4,7 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/LegendaryB/gogdl-ng/app/gdrive"
+	"github.com/gogdl-ng/gogdl-ng/app/gdrive"
 	"google.golang.org/api/drive/v3"
 )
 

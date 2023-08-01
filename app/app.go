@@ -5,11 +5,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/LegendaryB/gogdl-ng/app/api/v1"
-	"github.com/LegendaryB/gogdl-ng/app/config"
-	"github.com/LegendaryB/gogdl-ng/app/download"
-	"github.com/LegendaryB/gogdl-ng/app/gdrive"
-	"github.com/LegendaryB/gogdl-ng/app/logging"
+	"github.com/gogdl-ng/gogdl-ng/app/api/v1"
+	"github.com/gogdl-ng/gogdl-ng/app/config"
+	"github.com/gogdl-ng/gogdl-ng/app/download"
+	"github.com/gogdl-ng/gogdl-ng/app/gdrive"
+	"github.com/gogdl-ng/gogdl-ng/app/logging"
 	"github.com/gorilla/mux"
 )
 

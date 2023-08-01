@@ -1,4 +1,4 @@
-module github.com/LegendaryB/gogdl-ng
+module github.com/gogdl-ng/gogdl-ng
 
 go 1.16
 

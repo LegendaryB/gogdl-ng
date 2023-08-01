@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/LegendaryB/gogdl-ng/app/download"
-	"github.com/LegendaryB/gogdl-ng/app/logging"
+	"github.com/gogdl-ng/gogdl-ng/app/download"
+	"github.com/gogdl-ng/gogdl-ng/app/logging"
 )
 
 type JobController struct {

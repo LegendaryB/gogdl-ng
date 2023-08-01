@@ -9,8 +9,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/LegendaryB/gogdl-ng/app/config"
-	"github.com/LegendaryB/gogdl-ng/app/logging"
+	"github.com/gogdl-ng/gogdl-ng/app/config"
+	"github.com/gogdl-ng/gogdl-ng/app/logging"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/drive/v3"

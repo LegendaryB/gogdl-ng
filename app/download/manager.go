@@ -1,9 +1,9 @@
 package download
 
 import (
-	"github.com/LegendaryB/gogdl-ng/app/config"
-	"github.com/LegendaryB/gogdl-ng/app/gdrive"
-	"github.com/LegendaryB/gogdl-ng/app/logging"
+	"github.com/gogdl-ng/gogdl-ng/app/config"
+	"github.com/gogdl-ng/gogdl-ng/app/gdrive"
+	"github.com/gogdl-ng/gogdl-ng/app/logging"
 	"golang.org/x/net/context"
 	"google.golang.org/api/drive/v3"
 )
