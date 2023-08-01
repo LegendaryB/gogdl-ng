@@ -65,6 +65,14 @@ func (jm *JobManager) Run() error {
 		return err
 	}
 
+	unfinishedJobsCount := len(unfinishedJobs)
+
+	if unfinishedJobsCount == 0 {
+		jm.logger.Info("No unfinished jobs found, waiting..")
+	} else {
+		jm.logger.Infof("Found %d unfinished jobs, continuing with them now..", unfinishedJobsCount)
+	}
+
 	// todo: what when unfinished jobs > queueSize??
 	jm.dispatcher.AddJobs(unfinishedJobs)
 
@@ -81,6 +89,8 @@ func (jm *JobManager) RunJob(job *Job) {
 		jm.logger.Errorf("failed to retrieve files of folder: '%s'. %v", job.Id, err)
 		return
 	}
+
+	jm.logger.Infof("found %d files in folder %s", len(files), job.Name)
 
 	for _, driveFile := range files {
 		jm.setFileTargetPath(job, driveFile)

@@ -39,7 +39,7 @@ func Run() {
 	jobManager, err := download.NewJobManager(logger, conf, drive)
 
 	if err != nil {
-		logger.Fatalf("Failed to create instance of the Job manager. %v", err)
+		logger.Fatalf("failed to create instance of the Job manager. %v", err)
 	}
 
 	logger.Info("Created instance of the Job manager")
@@ -51,13 +51,17 @@ func Run() {
 
 	router.HandleFunc("/jobs", controller.CreateJob()).Methods("POST")
 
-	go listenAndServe(router, conf.Application.ListenPort)
+	go listenAndServe(router, logger, conf.Application.ListenPort)
 
-	jobManager.Run()
+	logger.Info("Startup finished, continuing with running the Job manager")
+
+	if err := jobManager.Run(); err != nil {
+		logger.Fatalf("Failed to run the Job manager. %v", err)
+	}
 }
 
-func listenAndServe(router *mux.Router, listenPort int) {
+func listenAndServe(router *mux.Router, logger logging.Logger, listenPort int) {
 	addr := fmt.Sprintf(":%d", listenPort)
 
-	log.Fatal(http.ListenAndServe(addr, router))
+	logger.Fatal(http.ListenAndServe(addr, router))
 }

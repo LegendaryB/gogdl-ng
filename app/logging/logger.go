@@ -3,6 +3,9 @@ package logging
 import (
 	"io"
 	"os"
+	"path"
+	"runtime"
+	"strconv"
 
 	"github.com/LegendaryB/gogdl-ng/app/config"
 	"github.com/sirupsen/logrus"
@@ -20,7 +23,15 @@ type Logger interface {
 
 func NewLogger(conf config.LoggingConfiguration) (*logrus.Logger, error) {
 	logger := logrus.New()
-	logger.Formatter = &logrus.JSONFormatter{}
+	logger.SetReportCaller(true)
+
+	logger.SetFormatter(&logrus.JSONFormatter{
+		CallerPrettyfier: func(frame *runtime.Frame) (function string, file string) {
+			fileName := path.Base(frame.File) + ":" + strconv.Itoa(frame.Line)
+
+			return "", fileName
+		},
+	})
 
 	lvl, err := logrus.ParseLevel(conf.LogLevel)
 

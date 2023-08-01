@@ -21,23 +21,28 @@ type DriveFile struct {
 
 func (ds *DriveService) DownloadFile(driveFile *DriveFile) error {
 	return retry.Do(func() error {
-		ds.logger.Infof("file: %s", driveFile.Remote.Name)
+		ds.logger.Infof("Starting to download file: %s", driveFile.Remote.Name)
 
 		if err := ds.getFileMetadata(driveFile); err != nil {
 			ds.logger.Errorf("failed to get file metadata. %v", err)
 			return err
 		}
 
+		ds.logger.Infof("Retrieved metadata of file '%s'", driveFile.Remote.Name)
+
 		defer driveFile.Descriptor.Close()
 
 		if driveFile.Size > 0 {
 			if ds.checkWhetherFileIsCompleted(driveFile) {
+				ds.logger.Infof("Download of file '%s' is already finished. Skipping", driveFile.Remote.Name)
 				return nil
 			}
 
 			if ds.checkWhetherFileIsCorrupted(driveFile) {
+				ds.logger.Infof("Local file '%s' is probably corrupted. Removing it..", driveFile.Descriptor.Name())
+
 				if err := truncate(driveFile.Descriptor); err != nil {
-					ds.logger.Errorf("failed to truncate file. %v", err)
+					ds.logger.Errorf("Failed to truncate local file '%s' file. %v", driveFile.Descriptor.Name(), err)
 					return err
 				}
 			}
@@ -46,15 +51,17 @@ func (ds *DriveService) DownloadFile(driveFile *DriveFile) error {
 		content, err := ds.requestFileContent(driveFile)
 
 		if err != nil {
-			ds.logger.Errorf("failed to fetch content of file. %v", err)
+			ds.logger.Errorf("Failed to fetch content of file '%s' from Google Drive. %v", driveFile.Remote.Name, err)
 			return err
 		}
+
+		ds.logger.Infof("Fetched content of file '%s' from Google Drive.", driveFile.Remote.Name)
 
 		w, err := io.Copy(driveFile.Descriptor, *content)
 		driveFile.Size = w
 
 		if err != nil {
-			ds.logger.Errorf("Failed to write fetched content to file. %v", err)
+			ds.logger.Errorf("Failed to write content to file. %v", err)
 			return err
 		}
 
@@ -91,18 +98,11 @@ func (ds *DriveService) checkWhetherFileIsCompleted(driveFile *DriveFile) bool {
 		}
 	}
 
-	ds.logger.Info("file is already completed")
-
 	return true
 }
 
 func (ds *DriveService) checkWhetherFileIsCorrupted(driveFile *DriveFile) bool {
-	if driveFile.Size > driveFile.Remote.Size {
-		ds.logger.Warnf("size of local file > size of remote file. file is probably corrupted.")
-		return true
-	}
-
-	return false
+	return driveFile.Size > driveFile.Remote.Size
 }
 
 func (ds *DriveService) requestFileContent(driveFile *DriveFile) (*io.ReadCloser, error) {
